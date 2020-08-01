@@ -56,7 +56,7 @@ def gradient_ascent_step(img, feature_extractor, learning_rate):
     return loss, img
 
 
-def gradient_ascent_loop(img, feature_extractor, iterations, learning_rate, max_loss=None):
+def gradient_ascent_loop(img, feature_extractor, iterations, learning_rate, max_loss=max_loss):
     for i in range(iterations):
         loss, img = gradient_ascent_step(img,feature_extractor, learning_rate)
         if max_loss is not None and loss > max_loss:
