@@ -1,0 +1,5 @@
+dream_dir/*
+dream_on/*
+.ipynb_checkpoints
+.vscode
+src/__pycache__/*
