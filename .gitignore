@@ -1,5 +1,6 @@
 dream_dir/*
 dream_on/*
+dream_seq/*
 .ipynb_checkpoints
 .vscode
 src/__pycache__/*

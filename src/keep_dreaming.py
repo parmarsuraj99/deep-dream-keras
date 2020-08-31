@@ -15,16 +15,14 @@ print("Num GPUs Available: ", len(tf.config.experimental.list_physical_devices('
 
 # You can tweak these setting to obtain new visual effects.
 layer_settings = {
-    "mixed2": 0.1,
-    "mixed3": 0.3,
-    "mixed4": 0.2,
-    "mixed5": 0.3,
-    "mixed6": 0.6,
-    "mixed7": 1.0,
+    "mixed4": 0.5,
+    "mixed5": 0.8,
+    "mixed6": 1.0,
+    "mixed7": 0.7,
 }
 
 # Playing with these hyperparameters will also allow you to achieve new effects
-step_size = 0.03  # Gradient ascent step size
+step_size = 0.01  # Gradient ascent step size
 num_octave = 3  # Number of scales at which to run gradient ascent
 octave_scale = 1.4  # Size ratio between scales
 optim_steps = 10  # Number of ascent steps per scale
@@ -102,9 +100,7 @@ def dream_on(original_img, feature_extractor, output_dir, iterations=1000, save_
             lastfile = files[-1]
         
             img = tf.keras.preprocessing.image.load_img(f"{output_dir}/{lastfile}")
-            
             img = tf.keras.preprocessing.image.img_to_array(img)
-
             
             x_trim = np.random.randint(0, 2)
             y_trim = np.random.randint(0, 2)
@@ -153,11 +149,11 @@ def main():
             print(f"created directory \"{args.directory}\"")
         except:
             print("couldn't create directory")
-    """
+
     if  len(os.listdir(args.directory))>0 and args.overwrite_save_dir==True:
         for f in os.listdir(args.directory):
             os.remove(os.path.join(args.directory, f))
-        print("Directory cleaned")"""
+        print("Directory cleaned")
 
     dream_on(proc, model, args.directory, iterations=args.iterations, save_every=args.save_every)
 
