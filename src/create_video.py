@@ -14,13 +14,14 @@ def convert_frames_to_video(pathIn:str, pathOut:str, fps:int):
  
     #for sorting the file names properly
     files.sort(key = lambda x: int(x.split("_")[-1].split(".")[0]))
- 
+
+    size = (100, 100)
     for i in tqdm(range(len(files))):
         filename=os.path.join(pathIn, files[i])
         #reading each files
         img = cv2.imread(filename)
         height, width, layers = img.shape
-        size = (width,height)
+        size = (width, height)
         #print(filename)
         #inserting the frames into an image array
         frame_array.append(img)
