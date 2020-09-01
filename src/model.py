@@ -2,7 +2,7 @@ import tensorflow as tf
 from tensorflow import keras
 from tensorflow.keras.applications import inception_v3
 
-def get_feature_extractor(layer_settings:dict):
+def get_feature_extractor(layer_settings:dict=None):
 
     if layer_settings is None:
         layer_settings = {

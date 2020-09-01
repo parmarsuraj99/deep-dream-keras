@@ -1,9 +1,10 @@
 # deep-dream-keras
+
 Deep Dream implementation inspired from official keras code.
 
 Script to keep dreaming in a loop and creating a video from the frames.
 
-### Example
+## Example
 
 - On one image
 
@@ -22,3 +23,19 @@ Script to keep dreaming in a loop and creating a video from the frames.
     --iterations 100 \
     --overwrite_save_dir false
   ```
+
+  ```python
+
+  python src/create_video.py \
+    --frames_dir dream_seq \
+    --fps 60 \
+    --output_file results/video.avi
+
+  ```
+
+  ```python
+    OUTPUT:
+
+    100%|█████████████████████████████████████████████████| 7/7 [00:00<00:00, 218.68it/s] 
+    video saved: results/video.avi 
+   ```

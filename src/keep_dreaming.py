@@ -1,5 +1,7 @@
 import os, time
+import cv2
 import numpy as np
+from PIL import Image
 import tensorflow as tf
 from tensorflow import keras
 from tensorflow.keras.applications import inception_v3
@@ -15,10 +17,11 @@ print("Num GPUs Available: ", len(tf.config.experimental.list_physical_devices('
 
 # You can tweak these setting to obtain new visual effects.
 layer_settings = {
-    "mixed4": 0.5,
-    "mixed5": 0.8,
-    "mixed6": 1.0,
-    "mixed7": 0.7,
+    "mixed3": 0.9,
+    "mixed4": 1.0,
+    "mixed5": 1.5,
+    "mixed6": 2.0,
+    "mixed7": 0.5,
 }
 
 # Playing with these hyperparameters will also allow you to achieve new effects
@@ -102,24 +105,21 @@ def dream_on(original_img, feature_extractor, output_dir, iterations=1000, save_
             img = tf.keras.preprocessing.image.load_img(f"{output_dir}/{lastfile}")
             img = tf.keras.preprocessing.image.img_to_array(img)
             
-            x_trim = np.random.randint(0, 2)
-            y_trim = np.random.randint(0, 2)
-            
-            """
-            x_trim = 10
-            y_trim = 7
-            """
+            x_trim = x_size//200
+            y_trim = y_size//200
 
             print(img.shape)
             img = img[0+x_trim:x_size-x_trim, 0+y_trim:y_size-y_trim]
             print(img.shape)
-            img = tf.image.resize(img, (x_size, y_size))
+            #img = tf.image.resize(img, (x_size, y_size))
+            img = cv2.resize(img, (y_size, x_size))
             print(img.shape)
             img = tf.expand_dims(img, axis=0)
             img = inception_v3.preprocess_input(img)
             print(i%save_every)
 
             img = gradient_ascent_loop(img, feature_extractor, optim_steps, step_size, max_loss=None)
+
 
             if save_every>0 and i%save_every==0:
                 tf.keras.preprocessing.image.save_img(f"{output_dir}/dream_{img.shape[1]}_{img.shape[2]}_{i}" + ".jpg", deprocess_image(img.numpy()))

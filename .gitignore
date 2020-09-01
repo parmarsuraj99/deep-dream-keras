@@ -4,3 +4,4 @@ dream_seq/*
 .ipynb_checkpoints
 .vscode
 src/__pycache__/*
+.gitignore

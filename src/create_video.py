@@ -1,12 +1,14 @@
+import os
+import argparse 
+from os.path import isfile, join
+
 import cv2
 import numpy as np
-import os
 
 from tqdm.auto import tqdm
  
-from os.path import isfile, join
- 
-def convert_frames_to_video(pathIn,pathOut,fps):
+def convert_frames_to_video(pathIn:str, pathOut:str, fps:int):
+
     frame_array = []
     files = [f for f in os.listdir(pathIn) if isfile(join(pathIn, f))]
  
@@ -14,7 +16,7 @@ def convert_frames_to_video(pathIn,pathOut,fps):
     files.sort(key = lambda x: int(x.split("_")[-1].split(".")[0]))
  
     for i in tqdm(range(len(files))):
-        filename=pathIn + files[i]
+        filename=os.path.join(pathIn, files[i])
         #reading each files
         img = cv2.imread(filename)
         height, width, layers = img.shape
@@ -29,11 +31,20 @@ def convert_frames_to_video(pathIn,pathOut,fps):
         # writing to a image array
         out.write(frame_array[i])
     out.release()
+    print(f"video saved: {pathOut}")
  
 def main():
-    pathIn= '../dream_on/'
-    pathOut = '../video.avi'
-    fps = 30.0
+    parser = argparse.ArgumentParser(description="Deep Dream tutorial")
+    parser.add_argument("--frames_dir", default="dream_seq", required=True, type=str, 
+        help="Directory for frames created using keep_dreaming.py")
+    parser.add_argument("--output_file", default="results/video.avi", type=str, help="Path of output video.")
+    parser.add_argument("--fps", default=30, type=int, help="Frames per second for video")
+
+    args = parser.parse_args()
+ 
+    pathIn= args.frames_dir
+    pathOut = args.output_file
+    fps = args.fps
     convert_frames_to_video(pathIn, pathOut, fps)
  
 if __name__=="__main__":
