@@ -13,4 +13,12 @@ The idea is to maximize the loss such that the image increasingly activates the 
 
 ## Overview
 
-The following tutorial uses a pre-trained Convolutional Neural Network model called "Inception"
+The following tutorial uses a pre-trained Convolutional Neural Network model called "[InceptionV3](https://keras.io/api/applications/inceptionv3/)" from tf.keras .
+
+Code for the tutorial [parmarsuraj99/deep-dream-keras](https://github.com/parmarsuraj99/deep-dream-keras)
+
+We'll use **Spell Runs** to run a script from the code repository that takes an image and saves an image after applying deep dream.
+
+The repo already contains some sample input images that we can use for initial explorations.
+
+## Let's see a dream
