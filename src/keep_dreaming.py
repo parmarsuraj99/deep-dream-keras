@@ -18,10 +18,10 @@ print("Num GPUs Available: ", len(tf.config.experimental.list_physical_devices('
 # You can tweak these setting to obtain new visual effects.
 layer_settings = {
     "mixed3": 0.5,
-    "mixed4": 2.0,
-    "mixed5": 1.7,
-    "mixed6": 1.0,
-    "mixed7": 1.8,
+    "mixed4": 1.8,
+    "mixed5": 1.5,
+    "mixed6": 1.5,
+    "mixed7": 1.9,
 }
 
 # Playing with these hyperparameters will also allow you to achieve new effects
