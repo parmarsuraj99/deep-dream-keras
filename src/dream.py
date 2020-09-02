@@ -1,4 +1,4 @@
-import time
+import os, time
 import numpy as np
 import tensorflow as tf
 from tensorflow import keras
@@ -110,10 +110,13 @@ def main():
     model = get_feature_extractor(layer_settings)
     print("model loaded\nDreaming")
 
+    print(os.path.split(args.result_img))
+
     if not os.path.isdir(args.result_img.split("/")[0]):
         try:
-            os.mkdir(args.result_img.split("/")[0])
-            print(f"created directory \"{args.result_img.split("/")[0]}\"")
+            d_dir = args.result_img.split("/")[0]
+            os.mkdir(d_dir)
+            print(f"created directory: {d_dir}")
         except:
             print("couldn't create directory")
 
