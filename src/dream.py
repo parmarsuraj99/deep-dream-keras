@@ -113,7 +113,7 @@ def main():
     if not os.path.isdir(args.result_img.split("/")[0]):
         try:
             os.mkdir(args.result_img.split("/")[0])
-            print(f"created directory \"{args.result_img.split("/")[0]}\"")
+            print(f"created directory :{args.result_img.split("/")[0]}")
         except:
             print("couldn't create directory")
 
