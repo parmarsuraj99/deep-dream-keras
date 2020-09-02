@@ -66,7 +66,7 @@ def gradient_ascent_loop(img, feature_extractor, iterations, learning_rate, max_
 
 #----------------------------------------------------------------------
 
-def dream_on(original_img, feature_extractor, output_name="result"):
+def dream_on(original_img, feature_extractor, output_name="result.jpg"):
     #original_img = preprocess_image(base_image_path)
     original_shape = original_img.shape[1:3]
 
@@ -100,7 +100,7 @@ def dream_on(original_img, feature_extractor, output_name="result"):
 def main():
     parser = argparse.ArgumentParser(description="Deep Dream tutorial")
     parser.add_argument("--src_img", default="sky.jpg", required=True, type=str, help="Source image to perform deep dram on")
-    parser.add_argument("--result_img", default="dream_result.jpg", type=str, help="Result image to perform deep dram on")
+    parser.add_argument("--result_img", default="results/dream_result.jpg", type=str, help="Result image to perform deep dram on")
 
     args = parser.parse_args()
 
@@ -109,6 +109,13 @@ def main():
 
     model = get_feature_extractor(layer_settings)
     print("model loaded\nDreaming")
+
+    if not os.path.isdir(args.result_img.split("/")[0]):
+        try:
+            os.mkdir(args.result_img.split("/")[0])
+            print(f"created directory \"{args.result_img.split("/")[0]}\"")
+        except:
+            print("couldn't create directory")
 
     dream_on(proc, model, args.result_img)
 
