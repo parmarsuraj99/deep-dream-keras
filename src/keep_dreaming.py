@@ -17,11 +17,11 @@ print("Num GPUs Available: ", len(tf.config.experimental.list_physical_devices('
 
 # You can tweak these setting to obtain new visual effects.
 layer_settings = {
-    "mixed3": 0.9,
+    "mixed3": 0.5,
     "mixed4": 1.0,
-    "mixed5": 1.5,
+    "mixed5": 1.7,
     "mixed6": 2.0,
-    "mixed7": 0.5,
+    "mixed7": 2.8,
 }
 
 # Playing with these hyperparameters will also allow you to achieve new effects
@@ -43,6 +43,7 @@ def loss_fn(image, model):
         activation = features[layer]
         scaling = tf.reduce_prod(tf.cast(tf.shape(activation), tf.float32))
         loss+=coeff*tf.reduce_sum(tf.square(activation[:, 2:-2, 2:-2, :]))/scaling
+    
     return loss
 
 
@@ -54,7 +55,7 @@ def _gradient_ascent(img, model:tf.keras.Model, step_size):
     grads = tape.gradient(loss, img)
     
     #Normalizing  gradients: Crucial
-    grads /= tf.maximum(tf.reduce_mean(tf.abs(grads)), 1e-6)
+    grads /= tf.maximum(tf.math.reduce_mean(tf.abs(grads)), 1e-8)
     img += step_size * grads
     img = tf.clip_by_value(img, -1, 1)
     
@@ -73,7 +74,7 @@ def gradient_ascent_loop(img, model, optim_steps, step_size, max_loss=None):
 
 #----------------------------------------------------------------------
 
-def dream_on(original_img, feature_extractor, output_dir, iterations=1000, save_every=10, downscale_factor=3):
+def dream_on(original_img, feature_extractor, output_dir, iterations=1000, save_every=10, downscale_factor=2):
 
     #processed_img = preprocess_image(original_img)
     processed_img = original_img
@@ -105,14 +106,20 @@ def dream_on(original_img, feature_extractor, output_dir, iterations=1000, save_
             img = tf.keras.preprocessing.image.load_img(f"{output_dir}/{lastfile}")
             img = tf.keras.preprocessing.image.img_to_array(img)
             
-            x_trim = x_size//200
-            y_trim = y_size//200
+            x_trim = 2
+            y_trim = 2
 
             print(img.shape)
-            img = img[0+x_trim:x_size-x_trim, 0+y_trim:y_size-y_trim]
+            #img = img[0:x_size-x_trim, 0:y_size-y_trim]
+            img = tf.image.central_crop(img, central_fraction=0.99)
+            img = tf.image.resize(img, (x_size, y_size))
             print(img.shape)
-            #img = tf.image.resize(img, (x_size, y_size))
-            img = cv2.resize(img, (y_size, x_size))
+
+            #kernel = np.ones((5,5),np.float32)/25
+            #img = cv2.filter2D(np.array(img),-1,kernel)
+            #img = cv2.GaussianBlur(np.array(img), (9, 9), 0)
+            #img = cv2.resize(img, (y_size, x_size))
+
             print(img.shape)
             img = tf.expand_dims(img, axis=0)
             img = inception_v3.preprocess_input(img)
@@ -120,9 +127,12 @@ def dream_on(original_img, feature_extractor, output_dir, iterations=1000, save_
 
             img = gradient_ascent_loop(img, feature_extractor, optim_steps, step_size, max_loss=None)
 
-
             if save_every>0 and i%save_every==0:
-                tf.keras.preprocessing.image.save_img(f"{output_dir}/dream_{img.shape[1]}_{img.shape[2]}_{i}" + ".jpg", deprocess_image(img.numpy()))
+                deproc_img = deprocess_image(img.numpy())
+
+                deproc_img = cv2.GaussianBlur(deproc_img, (3, 3), 0)
+
+                tf.keras.preprocessing.image.save_img(f"{output_dir}/dream_{img.shape[1]}_{img.shape[2]}_{i}" + ".jpg", deproc_img)
                 print(f"-------dream_{img.shape[1]}_{img.shape[2]}_{i}" + ".jpg-------")
 
 #----------------------------------------------------------------------
@@ -133,6 +143,7 @@ def main():
     parser.add_argument("--directory", default="../dream_dir", type=str, help="Result directory to save intermediate images")
     parser.add_argument("--iterations", default="1000", type=int, help="How long to dream.")
     parser.add_argument("--save_every", default="1", type=int, help="Saving image after every _ iterations")
+    parser.add_argument("--downscale_factor", default="3", type=int, help="Downscale factor for reducing image scale")
     parser.add_argument("--overwrite_save_dir", default=False, type=bool, help="Delete all files in selected directory")
 
     args = parser.parse_args()
@@ -155,7 +166,7 @@ def main():
             os.remove(os.path.join(args.directory, f))
         print("Directory cleaned")
 
-    dream_on(proc, model, args.directory, iterations=args.iterations, save_every=args.save_every)
+    dream_on(proc, model, args.directory, iterations=args.iterations, save_every=args.save_every, downscale_factor=args.downscale_factor)
 
 
 if __name__ == "__main__":
