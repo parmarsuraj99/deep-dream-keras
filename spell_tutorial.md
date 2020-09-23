@@ -25,7 +25,7 @@ The repo already contains some sample input images that we can use for initial e
 
 
 
-```shell
+```sh
 $ spell run --machine-type CPU \
     --pip matplotlib \
     --pip numpy \
@@ -40,7 +40,7 @@ $ spell run --machine-type CPU \
 You'll see the run verbose like this. 
 
 
-```shell
+```sh
 model loaded
 Dreaming
 ('results', 'aus_dream.jpg')
@@ -66,11 +66,15 @@ Saving build environment for future runs
 
 Note: If your run is killed, try using a smaller image.
 
+## Viewing the result
+
+Outputs from the runs are saved in **`Resources > Runs > #run`**.
+
 ## Uploading and mounting an image
 
 This was done using a default image, but you might want to experiment with your image. You can upload them using spell and mount while running the script.
 
-```shell
+```sh
 $ spell upload -n deep_dream inputs
 ```
 
@@ -78,7 +82,7 @@ Uploads can be easily mounted before starting a run.
 
 ![](https://raw.githubusercontent.com/parmarsuraj99/deep-dream-keras/master/spell_images/uploads.png)
 
-```shell
+```sh
 python src/dream.py \
     --src_img /spell/flowers_pixel.jpg \
     --result_img results/flower_dream.jpg
@@ -87,3 +91,4 @@ python src/dream.py \
 Here's a result of one of my uploaded pictures
 
 ![](https://raw.githubusercontent.com/parmarsuraj99/deep-dream-keras/master/results/flowers_pixel_dream.jpg)
+
