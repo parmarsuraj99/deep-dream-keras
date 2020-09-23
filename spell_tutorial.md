@@ -6,7 +6,7 @@ It does so by maximizing the activations of specific layer(s) for a given input 
 
 Original image             |  Image with patterns
 :-------------------------:|:-------------------------:
-![](https://raw.githubusercontent.com/parmarsuraj99/deep-dream-keras/master/inputs/aus.jpg)  |  ![](https://raw.githubusercontent.com/parmarsuraj99/deep-dream-keras/master/results/aus_dream.jpg)
+![](https://raw.githubusercontent.com/parmarsuraj99/deep-dream-keras/master/inputs/sky.jpg)  |  ![](https://raw.githubusercontent.com/parmarsuraj99/deep-dream-keras/master/results/sky_dream.jpg)
 
 
 The idea is to maximize the loss such that the image increasingly activates the selected layers. Base on the CNN model, it is generally seen that shallow layers focus more on low-level patterns like lines and abstract geometrical patterns. Deeper layers however, focuses more on the image patterns that it was trained on. We can use this findings to select the layers and get different outputs.
@@ -25,7 +25,7 @@ The repo already contains some sample input images that we can use for initial e
 
 
 
-```
+```shell
 $ spell run --machine-type CPU \
     --pip matplotlib \
     --pip numpy \
@@ -40,7 +40,7 @@ $ spell run --machine-type CPU \
 You'll see the run verbose like this. 
 
 
-```
+```shell
 model loaded
 Dreaming
 ('results', 'aus_dream.jpg')
@@ -66,4 +66,17 @@ Saving build environment for future runs
 
 Note: If your run is killed, try using a smaller image.
 
+## Uploading and mounting an image
+
 This was done using a default image, but you might want to experiment with your image. You can upload them using spell and mount while running the script.
+
+```shell
+$ spell upload -n deep_dream inputs
+```
+
+and You can easily mount your uploads before starting a run.
+
+![](spell_images\uploads.png)
+
+
+
