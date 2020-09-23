@@ -10,8 +10,9 @@ Script to keep dreaming in a loop and creating a video from the frames.
 
     ```python
     python src/dream.py \
-        --src_img inputs/aus.jpg \
-        --result_img results/aus_dream.jpg
+      --src_img inputs/flowers_pixel.jpg \
+      --result_img results/flowers_pixel_dream.jpg \
+      --downscale_factor 1.5 
     ```
 
 - Keep Dreaming

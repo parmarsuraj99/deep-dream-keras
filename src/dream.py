@@ -101,10 +101,20 @@ def main():
     parser = argparse.ArgumentParser(description="Deep Dream tutorial")
     parser.add_argument("--src_img", default="sky.jpg", required=True, type=str, help="Source image to perform deep dram on")
     parser.add_argument("--result_img", default="results/dream_result.jpg", type=str, help="Result image to perform deep dram on")
+    parser.add_argument("--downscale_factor", default=1, type=float, help="Downscale Factor")
+
 
     args = parser.parse_args()
 
     proc = preprocess_image(args.src_img)
+
+    if args.downscale_factor > 1:
+        print(proc.shape)
+        new_shape = [int(proc.shape[1]//args.downscale_factor), 
+                    int(proc.shape[2]//args.downscale_factor)]
+        proc = tf.image.resize(proc, new_shape)
+
+
     print(proc.shape)
 
     model = get_feature_extractor(layer_settings)
