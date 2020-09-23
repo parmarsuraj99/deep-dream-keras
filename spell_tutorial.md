@@ -74,9 +74,16 @@ This was done using a default image, but you might want to experiment with your 
 $ spell upload -n deep_dream inputs
 ```
 
-and You can easily mount your uploads before starting a run.
+Uploads can be easily mounted before starting a run.
 
-![](spell_images\uploads.png)
+![](https://raw.githubusercontent.com/parmarsuraj99/deep-dream-keras/master/spell_images/uploads.png)
 
+```shell
+python src/dream.py \
+    --src_img /spell/flowers_pixel.jpg \
+    --result_img results/flower_dream.jpg
+```
 
+Here's a result of one of my uploaded pictures
 
+![](https://raw.githubusercontent.com/parmarsuraj99/deep-dream-keras/master/results/flowers_pixel_dream.jpg)
