@@ -1,6 +1,6 @@
 # deep-dream-keras
 
-Deep Dream implementation inspired from official keras code.
+Deep Dream implementation inspired from official [keras implementaion](https://keras.io/examples/generative/deep_dream/).
 
 Script to keep dreaming in a loop and creating a video from the frames.
 
